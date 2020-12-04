@@ -2,9 +2,16 @@ function init () {
 
 const inquirer = require('inquirer');
 const fs = require('fs'); 
+const generate = require('./utils/generateMarkdown.js');
+const path = require('path');
 
 inquirer
   .prompt([
+    { 
+      type: "input",
+      message: "What is a good Title for your project?",
+      name: "title",  
+         },
     { 
       type: "input",
       message: "What is a good Description of your project?",
@@ -15,6 +22,11 @@ inquirer
        message: "How do you Install your application?",
        name: "installation",
     },
+    {
+      type: "input",
+      message: "How do you Install your application?",
+      name: "installation",
+   },
     {
         type: "input",
         message: "How do you Use your application?",
@@ -33,7 +45,7 @@ inquirer
     },
    {
         type: "input",
-        message: "How do people test your project?",
+        message: "How do people update the tests for your project?",
         name: "tests"
     },
     {
@@ -48,10 +60,7 @@ inquirer
     },
   ])
   .then((response) => {
-    console.log({response});
-    filesystem.writeFile("README.md", JSON.stringify(exclamation + closer, null, '\t' ), (err) =>
-    err ? console.log(err) : console.log('success!')
-    );
+    return fs.writeFileSync(path.join (process.cwd(), "README.md"), generate(response));
   });
 }
 
